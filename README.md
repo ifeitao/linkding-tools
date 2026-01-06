@@ -407,33 +407,6 @@ python3 linkding-tools.py rename-tag python Python
 # If link already has "Python" tag, only removes "python" tag
 ```
 
-## 故障排除
-
-### 连接失败
-
-```
-✗ API 连接失败: 401
-```
-
-**解决方案：**
-- 检查 `LINKDING_URL` 是否正确（包括 https://)
-- 检查 `LINKDING_TOKEN` 是否过期或有效
-- 在 Linkding 设置中重新生成 token
-
-### 导入到一半失败
-
-工具会显示每个链接的处理结果，支持重试：
-- 已成功上传的链接不会重复
-- 可以删除已上传的部分，然后重新运行
-- 使用 `-y` 参数跳过确认，加快重试速度
-
-### JSONL 文件中有无效数据
-
-工具会自动跳过：
-- 缺少 `url` 字段的行
-- JSON 格式不正确的行
-- 无效的 URL
-
 ## Project Structure
 
 ```
