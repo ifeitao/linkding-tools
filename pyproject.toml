@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "linkding-tools"
+version = "1.0.0"
+description = "A powerful toolkit for managing Linkding bookmarks, supporting imports from multiple data sources"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "ifeitao", email = "your.email@example.com"}
+]
+keywords = [
+    "linkding",
+    "bookmark",
+    "tools",
+    "cli"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Utilities"
+]
+
+[project.scripts]
+linkding-tools = "linkding_tools:main"
+
+[project.urls]
+Homepage = "https://github.com/ifeitao/linkding-tools"
+Documentation = "https://github.com/ifeitao/linkding-tools/blob/main/README.md"
+Repository = "https://github.com/ifeitao/linkding-tools"
+Issues = "https://github.com/ifeitao/linkding-tools/issues"
+
+[tool.uv]
+# uv configuration

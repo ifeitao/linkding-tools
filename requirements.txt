@@ -1,0 +1,9 @@
+# No external dependencies - uses Python standard library only
+# Standard library modules used:
+# - json: JSON file handling
+# - re: Regular expressions
+# - http.client: HTTP requests
+# - ssl: HTTPS support
+# - urllib.parse: URL parsing
+# - argparse: Command-line arguments
+# - os, sys, time, pathlib: System libraries

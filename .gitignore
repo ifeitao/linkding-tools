@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Project specific
+.env
+!.env.example
+
+# Test files and temporary directories
+tests/
+tmp/
+_temp/
+bak/
+
+# Virtual environments (explicit)
+.venv/
+venv/
+env/
+ENV/
+
+# Build and distribution
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# IDE cache
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Misc
+*.swp
+*.swo
+*~
+.DS_Store
