@@ -201,7 +201,14 @@ def parse_chrome_bookmarks(html_content):
         line_stripped = line.strip()
         indent_level = (len(line) - len(line.lstrip())) // 4
         
-        if '<H3' in line_stripped:
+        # Handle folder closing: </DL> closes the folder at current indent_level
+        # The folder at level N is stored at folder_stack[N-1], so we need to remove it
+        if '</DL>' in line_stripped:
+            # Keep only folders before this level (folder_stack[:N-1] for level N)
+            if indent_level > 0:
+                folder_stack = folder_stack[:indent_level-1]
+        
+        elif '<H3' in line_stripped:
             h3_match = re.search(r'>([^<]+)<', line_stripped)
             if h3_match:
                 folder_name = h3_match.group(1).strip()
