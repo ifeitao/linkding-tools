@@ -463,7 +463,7 @@ def cmd_rename_tag(args, config):
     print(f"Replace tag [{old_tag}] with [{new_tag}]")
     
     # Get bookmarks with original tag
-    print(f"\nSearching for bookmarks with tag [{old_tag}] ]...")
+    print(f"\nSearching for bookmarks with tag [{old_tag}]...")
     bookmarks = get_bookmarks_with_tag(old_tag, config)
     
     if bookmarks is None:
