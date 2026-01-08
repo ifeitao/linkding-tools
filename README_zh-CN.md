@@ -101,16 +101,26 @@ python3 linkding-tools.py import-chrome bookmarks_2026_1_6.html -y
 ```
 
 ### 4. 重命名标签 (`rename-tag`)
-批量重命名 Linkding 中的标签。
+批量重命名/替换 Linkding 中的标签。支持一对一和一对多的标签转换。
 
 **用法：**
 ```bash
-# 将标签 "python" 替换为 "Python"
+# 将标签 "python" 重命名为 "Python"（一对一）
 python3 linkding-tools.py rename-tag python Python
+
+# 将一个标签替换为多个标签（一对多）
+# 例如：将"数据集下载"分解为"数据集"和"下载"
+python3 linkding-tools.py rename-tag "数据集下载" "数据集,下载"
 
 # 跳过确认
 python3 linkding-tools.py rename-tag python Python -y
 ```
+
+**功能特性：**
+- **一对一重命名：** `rename-tag old_tag new_tag`
+- **一对多扩展：** `rename-tag old_tag "new_tag1,new_tag2,new_tag3"`
+  - 避免重复标签的添加
+  - 自动移除逗号周围的空格
 
 ## 安装
 

@@ -452,15 +452,32 @@ def cmd_import_chrome(args, config):
 
 
 def cmd_rename_tag(args, config):
-    """Batch rename tags"""
-    old_tag = args.old_tag
-    new_tag = args.new_tag
+    """Batch rename/replace tags
     
-    if old_tag == new_tag:
+    Supports both one-to-one and one-to-many tag replacement:
+    - One-to-one: rename "old_tag" to "new_tag"
+    - One-to-many: rename "old_tag" to "tag1,tag2,tag3" (replace with multiple tags)
+    """
+    old_tag = args.old_tag
+    new_tags_input = args.new_tag
+    
+    # Parse new tags - support comma-separated multiple tags
+    new_tags_list = [t.strip() for t in new_tags_input.split(',')]
+    new_tags_list = [t for t in new_tags_list if t]  # Remove empty strings
+    
+    if not new_tags_list:
+        print("error: new tag(s) cannot be empty")
+        return 1
+    
+    # Check if it's a simple rename (one-to-one)
+    if len(new_tags_list) == 1 and old_tag == new_tags_list[0]:
         print("error: old tag and new tag are the same")
         return 1
     
-    print(f"Replace tag [{old_tag}] with [{new_tag}]")
+    if len(new_tags_list) == 1:
+        print(f"Replace tag [{old_tag}] with [{new_tags_list[0]}]")
+    else:
+        print(f"Replace tag [{old_tag}] with [{', '.join(new_tags_list)}]")
     
     # Get bookmarks with original tag
     print(f"\nSearching for bookmarks with tag [{old_tag}]...")
@@ -494,29 +511,36 @@ def cmd_rename_tag(args, config):
             stats["skipped"] += 1
             continue
         
-        new_tags = current_tags.copy()
+        updated_tags = current_tags.copy()
+        # Find the index of old_tag
+        tag_index = updated_tags.index(old_tag)
         
-        if new_tag in new_tags:
-            new_tags.remove(old_tag)
-            action = "Delete"
+        # Remove old tag
+        updated_tags.pop(tag_index)
+        
+        # Add new tags at the same position (or at the end if out of bounds)
+        # This preserves the position order somewhat
+        for i, new_tag in enumerate(new_tags_list):
+            if new_tag not in updated_tags:
+                updated_tags.insert(tag_index + i, new_tag)
+            # If new_tag already exists, we don't add it again
+        
+        # Determine action
+        if len(new_tags_list) == 1:
+            action = "Replaced"
         else:
-            index = new_tags.index(old_tag)
-            new_tags[index] = new_tag
-            action = "Replace"
+            action = f"Expanded to {len(new_tags_list)} tags"
         
-        success, error = update_bookmark_tags(bookmark_id, new_tags, config)
+        success, error = update_bookmark_tags(bookmark_id, updated_tags, config)
         
         if success:
-            if action == "Delete":
-                stats["removed"] += 1
-            else:
-                stats["replaced"] += 1
+            stats["replaced"] += 1
             print(f"  ✓ {action}: {url[:50]}...")
         else:
             stats["failed"] += 1
             print(f"  ✗ failed: {url[:50]}... ({error})")
     
-    print(f"\nCompleted: Replaced {stats['replaced']}, removed (already has new tag) {stats['removed']}, skipped {stats['skipped']}, failed {stats['failed']}")
+    print(f"\nCompleted: Replaced {stats['replaced']}, skipped {stats['skipped']}, failed {stats['failed']}")
     return 0
 
 
@@ -772,7 +796,7 @@ def interactive_menu(config):
         
         elif choice == '4':
             old_tag = input("Enter old tag to replace: ").strip()
-            new_tag = input("Enter new tag: ").strip()
+            new_tag = input("Enter new tag(s) - use comma to separate multiple tags: ").strip()
             
             class Args:
                 pass
@@ -839,9 +863,9 @@ Examples:
     p_chrome.add_argument('-y', '--yes', action='store_true', help='Skip confirmation')
     
     # rename-tag
-    p_tag = subparsers.add_parser('rename-tag', help='Batch rename tags')
+    p_tag = subparsers.add_parser('rename-tag', help='Batch rename/replace tags (supports one-to-many)')
     p_tag.add_argument('old_tag', help='Old tag name')
-    p_tag.add_argument('new_tag', help='New tag name')
+    p_tag.add_argument('new_tag', help='New tag name(s) - use comma to separate multiple tags (e.g. "tag1,tag2")')
     p_tag.add_argument('-y', '--yes', action='store_true', help='Skip confirmation')
     
     args = parser.parse_args()

@@ -103,16 +103,26 @@ python3 linkding-tools.py import-chrome bookmarks_2026_1_6.html -y
 ```
 
 ### 4. Rename Tags (`rename-tag`)
-Batch rename tags in Linkding.
+Batch rename/replace tags in Linkding. Supports both one-to-one and one-to-many tag replacement.
 
 **Usage:**
 ```bash
-# Replace tag "python" with "Python"
+# Rename tag "python" to "Python" (one-to-one)
 python3 linkding-tools.py rename-tag python Python
+
+# Replace a tag with multiple tags (one-to-many)
+# Convert "DatasetDownload" to "Dataset,Download"
+python3 linkding-tools.py rename-tag DatasetDownload "Dataset,Download"
 
 # Skip confirmation
 python3 linkding-tools.py rename-tag python Python -y
 ```
+
+**Features:**
+- **One-to-one rename:** `rename-tag old_tag new_tag`
+- **One-to-many expansion:** `rename-tag old_tag "new_tag1,new_tag2,new_tag3"`
+  - Existing tags are not duplicated
+  - Whitespace around commas is automatically trimmed
 
 ## Installation
 
